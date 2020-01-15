@@ -34,8 +34,8 @@ class AppFixtures extends Fixture
             $chrono = 1;
             $hash = $this->encoder->encodePassword($user, "password");
 
-            $user->setFirstname($faker->firstName())
-                ->setLastname($faker->lastName)
+            $user->setFirstName($faker->firstName())
+                ->setLastName($faker->lastName)
                 ->setEmail($faker->email)
                 ->setPassword($hash);
             $manager->persist($user);
