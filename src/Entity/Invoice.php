@@ -5,7 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
@@ -13,7 +16,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *  "pagination_enabled"=true,
  *  "pagination_items_per_page"=20,
  *  "order": {"sentAt":"desc"}
- *  }
+ *  },
+ *  normalizationContext={
+ *      "groups"={"invoices_read"}
+ * }
  * )
  * @ApiFilter(OrderFilter::class, properties={"amount", "sentAt"})
  * 
@@ -24,32 +30,46 @@ class Invoice
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"invoices_read", "customers_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"invoices_read", "customers_read"})
+     * @Assert\NotBlank(message="le montant de la facture est obligatoire")
+     * @Assert\Type(type="numeric", message="Le montant de la facture doit être un numerique")
      */
     private $amount;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"invoices_read", "customers_read"})
+     * @Assert\DateTime(message="La date doit être au format YYYY-MM-DD")
+     * @Assert\NotBlank(message="la date d'envoi doit être renseignée")
      */
     private $sentAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"invoices_read", "customers_read"}) 
+     * @Assert\NotBlank(message="Le status de la facture est obligatoire")
+     * @Assert\Choice(choices={"SENT", "PAID", "CANCELLED"}, message="Le status doit être SEND, PAID, ou CANCELLED")
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="invoices")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Le client de la facture doit être renseigné")
      */
     private $customer;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"invoices_read", "customers_read"})
+     * @Assert\NotBlank(message="le chrono de la facture est obligatoire")
+     * @Assert\Type(type="integer", message="Le chrono doit être un nombre")
      */
     private $chrono;
 
