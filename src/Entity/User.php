@@ -6,13 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"users_read"}}
+ * )
  * @UniqueEntity("email", message="Un utilisateur ayant cette adresse email existe déjà")
  */
 class User implements UserInterface
@@ -21,6 +24,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"invoices_read", "customers_read", "users_read"})
      */
     private $id;
 
@@ -28,6 +32,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="L'email doit être renseigné")
      * @Assert\Email(message="L'adresse email doit avoir un format valide")
+     * @Groups({"invoices_read", "customers_read", "users_read"})
      */
     private $email;
 
@@ -47,6 +52,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le prénom est obligatoire ")
      * @Assert\Length(min=3, minMessage="Le prénom doit faire entre et 255 caractères", max=255, maxMessage="Le prénom doit faire entre 3 et 255 caractères")
+     * @Groups({"invoices_read", "customers_read", "users_read"})
      */
     private $firstName;
 
@@ -54,6 +60,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom est obligatoire ")
      * @Assert\Length(min=3, minMessage="Le nom doit faire entre et 255 caractères", max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
+     * @Groups({"invoices_read", "customers_read", "users_read"})
      */
     private $lastName;
 
