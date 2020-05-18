@@ -61,6 +61,7 @@ class Invoice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="invoices")
+     * @Groups({"invoices_read"})
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank(message="Le client de la facture doit être renseigné")
      */
