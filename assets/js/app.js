@@ -5,13 +5,19 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 // les imports IMPORTANT
- import React from 'react';
- import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Navbar from './components/Navbar';
+import HomePage from './pages/Homepage';
+import { HashRouter, Switch, Route } from "react-router-dom";
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
-import Navbar from './components/Navbar';
-import HomePage from './pages/Homepage';
+import CustomersPage from './pages/CustomersPage';
+import LoginPage from './pages/LoginPage';
+import CustomersPageWithPagination from './pages/CustomersPageWithPagination';
+import InvoicesPage from './pages/InvoicesPage';
+
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -19,13 +25,21 @@ import HomePage from './pages/Homepage';
 console.log('Hello Webpack Encore!!!!');
 
 const App = () => {
-    return <>
-        <Navbar />
+    return (
+        <HashRouter>
+            <Navbar />
 
-        <div class="container pt-5"><HomePage />
-
-        </div>
-     </>
+            <main className="container pt-5">
+                <Switch> 
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/invoices" component={InvoicesPage} />
+                    <Route path="/customers" component={CustomersPage} />
+                    <Route path="/" component={HomePage} />
+                </Switch>
+                
+            </main>
+        </HashRouter>
+    );
 };
 
 

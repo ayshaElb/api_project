@@ -13,7 +13,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
  * @ApiResource(attributes={
- *  "pagination_enabled"=true,
+ *  "pagination_enabled"=false,
  *  "pagination_items_per_page"=20,
  *  "order": {"sentAt":"desc"}
  *  },
@@ -61,8 +61,8 @@ class Invoice
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="invoices")
-     * @Groups({"invoices_read"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"invoices_read"})
      * @Assert\NotBlank(message="Le client de la facture doit être renseigné")
      */
     private $customer;
